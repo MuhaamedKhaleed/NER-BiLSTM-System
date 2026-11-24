@@ -1,95 +1,87 @@
-# NER-BiLSTM-System
+# Sentence-level BiLSTM NER
 
-An end-to-end Named Entity Recognition (NER) solution leveraging Bidirectional Long Short-Term Memory (BiLSTM) networks implemented with TensorFlow and Keras. The system handles tabular token-tag datasets, performs tokenization and padding sequences, trains an entity classification model, and provides an interactive notebook widget for testing inferences.
+A local token tagger that groups labeled CSV rows into sentences, splits whole sentences and learns a training-only vocabulary. A bidirectional LSTM sees each complete sentence and emits one label per token. This corrects the historical isolated-word classifier, it does not preserve its predictions.
 
-## Table of Contents
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Project Setup](#project-setup)
-- [Usage](#usage)
-- [Interactive Interface](#interactive-interface)
-- [Limitations and Known Issues](#limitations-and-known-issues)
+## Verified scope
 
----
+38 offline tests pass locally, including actual TensorFlow CPU forward/loss, one tiny synthetic epoch, Keras save/load and inference checks. These verify wiring, not NER quality. No real dataset, pretrained model or full training run was used. Token accuracy is not entity-span F1. No benchmark score is claimed.
 
-## Features
-- **Data Preprocessing**: Robust loading supporting latin-1 encoding, tokenization, sequence vectorization, and dynamic padding.
-- **Label Encoding**: Automated tag transformation using `scikit-learn`'s LabelEncoder.
-- **Deep Learning Model**: Bidirectional LSTM network with an initial embedding layer for capturing bidirectional sequence context.
-- **Evaluation**: Quantitative metrics monitoring (sparse categorical crossentropy loss and classification accuracy).
-- **Interactive Inference UI**: Built-in `ipywidgets` UI for running entity tagging predictions on arbitrary user-provided text directly inside notebook environments.
+## Install and checks
 
----
+Python 3.11 or 3.12. Verified locally on Linux/Python 3.11 only. Installation needs internet, processing supplied files does not.
 
-## Tech Stack
-- **Language**: Python 3.9+
-- **Deep Learning**: TensorFlow / Keras
-- **Machine Learning & Preprocessing**: Scikit-Learn
-- **Data Handling**: Pandas, NumPy
-- **Interface**: IPywidgets, IPython
+```sh
+uv sync --locked --extra dev --extra ml
+uv run ner-bilstm --help
+uv run python -m ner_bilstm --help
+uv run python main.py --help
+uv run python -m pytest --cov=ner_bilstm --cov-report=term-missing
+uv run python -m ruff check src tests
+uv run python -m ruff format --check src tests
+uv run python -m mypy src
+uv run python -m pre_commit run --all-files
+```
 
----
+The lightweight `uv sync --locked --extra dev` installation can check data and show help without TensorFlow. ML dependencies are optional and imported only for explicit model operations. Tests skip the backend file if TensorFlow is absent; the full check above includes it.
+
+## CSV and CLI
+
+Supply a local CSV with unique `Sentence #`, `Word`, `Tag` headers. Extra columns such as POS are allowed. An ID starts a sentence; blank subsequent IDs continue it. IDs must be contiguous, first ID cannot be blank, and words/tags cannot be empty. UTF-8 is default; choose `--encoding latin-1` for older files. Words preserve case and punctuation. Unknown words keep their position using an OOV ID; unseen validation tags fail instead of being removed.
+
+```csv
+Sentence #,Word,Tag
+s1,Mona,B-PER
+,visits,O
+,Cairo,B-LOC
+s2,Cairo,B-LOC
+```
+
+The CLI expects shell-separated already-tokenized sentence words. It does not claim language-aware tokenization.
+
+The tested synthetic five-token/four-sentence check reports:
+
+```json
+{"sentences": 4, "train_sentences": 3, "validation_sentences": 1, "training_words": 4, "training_tags": 1, "validation_oov_tokens": 1}
+```
+
+Data-only example (replace the path with your file):
+
+```sh
+ner-bilstm check-data --data /tmp/ner-demo.csv
+```
+
+Configuration is opt-in: `ner-bilstm check-data --config .env`. Only `NER_DATA_PATH` is read; explicit `--data` wins. See `.env.example`. No API keys, accounts or automatic downloads.
+
+Explicit training interface: `ner-bilstm train DATA OUTPUT --epochs 10 --batch-size 32`. It writes a new output directory, never overwrites one, and evaluates the held-out validation split. No large training run has been performed. A separate untouched test set is required for final quality evidence. Prediction interface: `ner-bilstm predict ARTIFACT Mona visits Cairo`. Only load your own trusted local Keras artifacts; safe mode is not a security guarantee for untrusted model files. All CLI results are JSON; errors go to stderr and exit 2. Help, data check, synthetic training and prediction paths have been tested, not real-data results.
 
 ## Architecture
+
 ```text
-Raw Tokens/Tags -> Tokenizer / Sequence Padding -> Embedding Layer (100-dim) -> Bidirectional LSTM (64 units) -> Dense (Softmax) -> Predicted Tags
+CSV -> complete sentences -> sentence split -> train-only word/tag maps
+  -> post-padded integer arrays + padding weights
+  -> masked embedding -> BiLSTM(return_sequences=True) -> per-token softmax
+  -> unpadded token accuracy / aligned local predictions
 ```
 
----
+Runtime: Typer, Click, python-dotenv. Optional ML: TensorFlow CPU, NumPy. Dev: pytest/cov, Ruff, mypy, pre-commit. No remote API. `legacy/` preserves the original code for comparison, excluded from package/CI. It has known misleading row-level evaluation and import-time widget effects; do not run it as the supported interface. `main.py` now opens the explicit CLI and no longer starts training automatically.
 
-## Project Structure
-```text
-NER-BiLSTM-System/
-├── main.py           # Preprocessing, BiLSTM model training, and interactive interface
-├── requirements.txt  # Project dependencies
-└── README.md         # Project documentation
+## Container and CI
+
+Multi-stage slim/non-root Docker runs the lightweight data-check CLI. It does not include TensorFlow, data, weights or dev tools. Optional ML runs in the local environment, not this image. Hosted CI checks the actual TensorFlow synthetic path and the container separately. No image publishing, caches, stored artifacts or paid runners are configured. Final hosted result must be checked before claiming a green build.
+
+```sh
+docker build --tag ner-bilstm:local .
+docker run --rm ner-bilstm:local --help
 ```
 
----
+Local Docker is unavailable; build/run are verified only by hosted CI when that job passes, not locally.
 
-## Project Setup
+## Remaining work
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/NER-BiLSTM-System.git
-cd NER-BiLSTM-System
-```
+- Train on licensed representative sentence-level data and evaluate an untouched test split with entity-span precision/recall/F1, per-tag support and OOV/error slices.
+- Random sentence split does not guarantee document/person/source independence or remove duplicate sentence contents. Audit these before any quality claim.
+- No BIO-transition enforcement or CRF, contextual pretrained embeddings, calibrated uncertainty, streaming/large-corpus batching, early stopping or training resume.
+- Validation is reused for training feedback, never described as an untouched test set. No fairness, latency, memory or production-readiness claims.
+- Optional widgets were not carried into the supported package. No deployment, dataset/model redistribution, release or license change.
 
-### 2. Create a Virtual Environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Dataset Configuration
-Place your NER dataset CSV file in your working directory or adjust the dataset path constant in `main.py`:
-```python
-df = pd.read_csv('path/to/ner_datasetreference.csv', encoding='latin-1')
-```
-
----
-
-## Usage
-Run the training and evaluation script directly:
-```bash
-python main.py
-```
-
----
-
-## Interactive Interface
-When running inside a Jupyter notebook or Google Colab environment, execute the interactive widget block to instantiate the `ipywidgets` dashboard. Enter any sentence, click **Predict**, and inspect mapped entity classifications for each token in real time.
-
----
-
-## Limitations and Known Issues
-- The script expects a labeled dataset CSV (e.g. `ner_datasetreference.csv`) with corresponding sentence, token, and tag columns in the configured path.
-- The interactive UI relies on `ipywidgets` and `IPython.display`, which require an interactive notebook frontend to render visually.
-- Fixed maximum sequence lengths truncate sentences longer than the configured pad length during inference.
+See `docs/verification.md` for checks and scope, `docs/presentation.md` for unapplied GitHub copy. Demo screenshot/GIF: TODO after real-data evaluation. No fake badge or result.
