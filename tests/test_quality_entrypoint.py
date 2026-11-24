@@ -1,9 +1,9 @@
 """The optional quality recipe must never train or download on import."""
 
 import importlib.util
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
 
 def test_quality_import_has_no_optional_dependencies():
