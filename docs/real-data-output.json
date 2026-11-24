@@ -1,0 +1,17 @@
+{
+  "real_data": true,
+  "dataset": "WNUT 2017 Emerging Entities",
+  "source": "https://github.com/leondz/emerging_entities_17",
+  "license": "CC BY 4.0",
+  "train_sentences": 512,
+  "development_sentences": 128,
+  "selection": "first512 official train / first128 official dev, complete sentences; final test untouched",
+  "training_sha256": "731820e13f71af324c6b55a1575ec2ce59fbaa2a0806f8f0400b98d56cd6a7a5",
+  "training": {
+    "correct_tokens": 1795,
+    "tokens": 1995,
+    "token_accuracy": 0.899749373433584
+  },
+  "elapsed_seconds": 4.47,
+  "limits": "small2epoch CPU development run; token accuracy, not entity-span F1; social-text provenance/privacy limits; not production NER"
+}
