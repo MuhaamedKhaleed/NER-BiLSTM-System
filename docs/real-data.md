@@ -12,3 +12,14 @@ Clone/download upstream at https://github.com/leondz/emerging_entities_17 with R
 ## Actual limits
 
 small2epoch CPU development run; token accuracy, not entity-span F1; social-text provenance/privacy limits; not production NER
+
+## Explicit download and preparation
+
+The optional helper downloads only the documented primary-source files, checks SHA-256 and refuses an existing destination. It never runs during installation, import or tests. Source attribution/license cautions above still apply. No model/data is bundled. For an offline copy, add `--cached /path/to/source-files` with the same filenames; checksums are still required.
+
+```sh
+uv run --no-sync python scripts/fetch_real_data.py --output ./real-source
+uv run --no-sync python scripts/real_data.py --data ./real-source
+```
+
+The hashes pin the exact small development sources used here, not a permission warranty or a quality benchmark. If a source changes, the helper fails rather than silently training on different data.
