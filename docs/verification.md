@@ -21,3 +21,10 @@ Commands: uv sync --locked --extra dev --extra ml; python -m ner_bilstm --help; 
 Synthetic training uses invented tiny sentences and a single epoch only to test execution and artifact round-trip. No model from it is published. Train and validation keys must differ. The synthetic sentences intentionally reuse content, so this is not a generalization experiment. Padding labels have zero loss weight and inference excludes the padding class. Unknown validation labels fail instead of lowering evaluation support silently. Error handling catches expected local/data failures, not every possible TensorFlow hardware failure.
 
 Remaining: licensed corpus, document/source-aware and deduplicated splits, untouched test set, span F1, confidence intervals/error analysis, reproducibility across devices, full-data runtime/memory, trustworthy deployment. Lock does not prove all platforms work. Keras safe mode does not authorize loading unknown artifacts.
+
+
+## Gap-closure follow-up (24 November 2026)
+
+The CI source now uses uv 0.13.8 and the committed transitive lock, rather than a new pip resolution of direct pins. Dependency installer caching is keyed by uv.lock. The local matching command is `uv sync --locked --extra dev --extra ml`, followed by the existing tests/quality commands. This does not cache or publish private datasets, weights or model outputs. Public-repository-only guards remain. The changed workflow's hosted outcome must be checked after publication; prior green runs do not validate a changed workflow.
+
+A complete copy-only project-focused profile README draft is appended to presentation.md. No profile account edits, main merge, PR, release or license change is implied by that text. Historical notebook/full-data/quality limitations remain open, not replaced by a passing synthetic test.
