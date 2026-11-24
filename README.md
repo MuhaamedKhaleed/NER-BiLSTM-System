@@ -12,14 +12,15 @@ Python 3.11 or 3.12. Verified locally on Linux/Python 3.11 only. Installation ne
 
 ```sh
 uv sync --locked --extra dev --extra ml
-uv run ner-bilstm --help
-uv run python -m ner_bilstm --help
-uv run python main.py --help
-uv run python -m pytest --cov=ner_bilstm --cov-report=term-missing
-uv run python -m ruff check src tests
-uv run python -m ruff format --check src tests
-uv run python -m mypy src
-uv run python -m pre_commit run --all-files
+. .venv/bin/activate
+ner-bilstm --help
+python -m ner_bilstm --help
+python main.py --help
+python -m pytest --cov=ner_bilstm --cov-report=term-missing
+python -m ruff check src tests
+python -m ruff format --check src tests
+python -m mypy src
+python -m pre_commit run --all-files
 ```
 
 The lightweight `uv sync --locked --extra dev` installation can check data and show help without TensorFlow. ML dependencies are optional and imported only for explicit model operations. Tests skip the backend file if TensorFlow is absent; the full check above includes it.
