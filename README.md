@@ -99,3 +99,7 @@ See [commands, saved output and scope](docs/synthetic-demo.md). This is invented
 ## Real-data CPU example
 
 See [actual results, source terms and explicit download/preparation commands](docs/real-data.md). These are small development runs, not accuracy or production guarantees. No model/data is committed.
+
+## Measured quality follow-up
+
+See [span metrics and explicit linear alternative](docs/quality-cpu.md). Token accuracy alone was misleading; no high-quality NER claim.
