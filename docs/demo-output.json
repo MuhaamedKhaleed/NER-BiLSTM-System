@@ -1,0 +1,26 @@
+{
+  "synthetic_only": true,
+  "scope": "invented_sentences_tiny_random_network_not_NER_quality",
+  "quality_claim": false,
+  "result": {
+    "training": {
+      "correct_tokens": 1,
+      "tokens": 2,
+      "token_accuracy": 0.5
+    },
+    "prediction": [
+      {
+        "word": "Mona",
+        "tag": "O"
+      },
+      {
+        "word": "unseen",
+        "tag": "O"
+      },
+      {
+        "word": "Cairo",
+        "tag": "B-PER"
+      }
+    ]
+  }
+}
