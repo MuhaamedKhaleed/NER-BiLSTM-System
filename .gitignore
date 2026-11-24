@@ -1,61 +1,28 @@
-# Byte-compiled / optimized / DLL files
+.venv/
 __pycache__/
 *.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage*
+htmlcov/
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints
-
-# IPython
-.ipython/
-
-# TensorFlow models and checkpoints
-*.h5
-*.pb
-*.ckpt
-checkpoints/
-saved_model/
-
-# Datasets and local CSVs
+.pre-commit-cache/
+results/
+logs/
+toxic_comment_model/
+*.safetensors
+*.bin
+*.pt
 *.csv
-*.tsv
-*.json
-!example_data.csv
+*.zip
 
-# IDEs and Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS generated files
-.DS_Store
-Thumbs.db
+*.joblib
+*.pkl
+kaggle.json
+titanic_data/
