@@ -1,0 +1,42 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  checks:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    env:
+      TF_CPP_MIN_LOG_LEVEL: '3'
+      TF_NUM_INTRAOP_THREADS: '1'
+      TF_NUM_INTEROP_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install development and CPU ML package
+        run: python -m pip install -e '.[dev,ml]'
+      - name: Offline tests with real synthetic backend
+        run: python -m pytest --cov=ner_bilstm --cov-report=term-missing
+      - name: Lint
+        run: python -m ruff check src tests
+      - name: Format
+        run: python -m ruff format --check src tests
+      - name: Types
+        run: python -m mypy src
+      - name: Pre-commit
+        run: python -m pre_commit run --all-files
+      - name: CLI
+        run: |
+          python -m ner_bilstm --help
+          python main.py --help
+          ner-bilstm --help
+      - name: Build data-only container
+        run: docker build --tag ner-bilstm:ci .
+      - name: Container smoke checks
+        run: |
+          docker run --rm ner-bilstm:ci --help
+          printf 'Sentence #,Word,Tag\ns1,Hello,O\ns2,World,O\n' > /tmp/ner-demo.csv
+          docker run --rm -v /tmp/ner-demo.csv:/data.csv:ro ner-bilstm:ci check-data --data /data.csv
