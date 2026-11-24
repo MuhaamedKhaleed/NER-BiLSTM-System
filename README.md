@@ -86,3 +86,8 @@ Local Docker is unavailable; build/run are verified only by hosted CI when that 
 - Optional widgets were not carried into the supported package. No deployment, dataset/model redistribution, release or license change.
 
 See `docs/verification.md` for checks and scope, `docs/presentation.md` for unapplied GitHub copy. Demo screenshot/GIF: TODO after real-data evaluation. No fake badge or result.
+
+
+## License scope
+
+New project-owned package/engineering files use the owner's MIT default. See LICENSE and LICENSE-SCOPE.md. This is not permission to relicense historical notebooks, third-party code, datasets, models or weights. Their provenance and terms still need review. Earlier verification entries saying no license was added describe the initial pilot, not this follow-up.
