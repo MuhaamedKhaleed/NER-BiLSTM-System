@@ -33,9 +33,9 @@ jobs:
       - name: Offline tests with real synthetic backend
         run: uv run --no-sync python -m pytest --cov=ner_bilstm --cov-report=term-missing
       - name: Lint
-        run: uv run --no-sync python -m ruff check src tests
+        run: uv run --no-sync python -m ruff check src tests scripts/demo.py
       - name: Format
-        run: uv run --no-sync python -m ruff format --check src tests
+        run: uv run --no-sync python -m ruff format --check src tests scripts/demo.py
       - name: Types
         run: uv run --no-sync python -m mypy src
       - name: Pre-commit
@@ -54,3 +54,9 @@ jobs:
           docker run --rm ner-bilstm:ci --help
           printf 'Sentence #,Word,Tag\ns1,Hello,O\ns2,World,O\n' > /tmp/ner-demo.csv
           docker run --rm -v /tmp/ner-demo.csv:/data.csv:ro ner-bilstm:ci check-data --data /data.csv
+      - name: Standalone synthetic demo
+        run: uv run --no-sync python scripts/demo.py /tmp/standalone-synthetic-demo
+      - name: Opt-in locked CPU ML container
+        run: |
+          docker build -f Dockerfile.ml --tag synthetic-ml:ci .
+          docker run --rm --network none synthetic-ml:ci
