@@ -13,3 +13,8 @@
 
 ### Changed
 - Original script retained under legacy/, not the supported API. No widget migration, release or pretrained model.
+
+
+### Engineering follow-up
+- Use the committed uv lock in CI and key dependency-installer caching by that lock.
+- Complete copy-only profile README drafts and clarify historical versus current verification.
