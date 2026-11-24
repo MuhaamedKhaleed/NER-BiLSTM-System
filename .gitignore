@@ -26,3 +26,7 @@ toxic_comment_model/
 *.pkl
 kaggle.json
 titanic_data/
+
+*.keras
+*.h5
+artifacts/
