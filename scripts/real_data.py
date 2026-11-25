@@ -73,7 +73,9 @@ def main():
     dropped = len(dev_all) - len(validation)
     if dropped:
         print(
-            f"Skipped {dropped} dev sentences with tags absent from the training slice"
+            f"WARNING: skipped {dropped} of {len(dev_all)} dev sentences with tags "
+            "absent from the training slice; the score below is on a subset and is "
+            "not comparable to the full dev set"
         )
     start = time.time()
     scores = train(
@@ -106,6 +108,13 @@ def main():
             f"small {args.epochs}-epoch CPU development run; token accuracy, not "
             "entity-span F1; social-text provenance/privacy limits; not"
             " production NER"
+        )
+        + (
+            f". WARNING: {dropped} of {len(dev_all)} dev sentences were skipped because"
+            " their tags are absent from the training slice, so this score is on a"
+            " subset and is NOT comparable to the full-dev score"
+            if dropped
+            else ""
         ),
     }
     (root / "real-report.json").write_text(json.dumps(report, indent=2) + "\n")
