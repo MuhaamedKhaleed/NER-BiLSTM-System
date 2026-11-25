@@ -66,9 +66,15 @@ def main():
     # Whole official partitions; small CPU development slice, no row-level random split.
     training = read("wnut17train.conll", "train")[: args.max_train]
     vocab = Vocabulary.fit(training)
-    validation = read("emerging.dev.conll", "dev")[:128]
-    unknown = {t for s in validation for t in s.tags} - set(vocab.tags)
-    assert not unknown, unknown
+    dev_all = read("emerging.dev.conll", "dev")[:128]
+    # A small --max-train slice may miss a rare tag; skip dev sentences using it
+    # (counted in the report) instead of failing.
+    validation = [s for s in dev_all if set(s.tags) <= set(vocab.tags)]
+    dropped = len(dev_all) - len(validation)
+    if dropped:
+        print(
+            f"Skipped {dropped} dev sentences with tags absent from the training slice"
+        )
     start = time.time()
     scores = train(
         training,
@@ -86,6 +92,7 @@ def main():
         "license": "CC BY 4.0",
         "train_sentences": len(training),
         "development_sentences": len(validation),
+        "development_skipped_unseen_tags": dropped,
         "selection": (
             f"first{args.max_train} official train / first128 official dev, complete "
             "sentences; final test untouched"
