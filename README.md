@@ -12,7 +12,7 @@ uv run --no-sync python scripts/fetch_real_data.py --output ./real-source       
 uv run --no-sync python scripts/real_data.py --data ./real-source --epochs 2 --max-train 512
 uv run --no-sync ner-bilstm predict ./real-source/model-real Mona visits Cairo
 ```
-Output: `real-source/model-real/` (trained model) and `real-report.json`, then per-word tags. The default tiny model mostly predicts the majority tag `O`, so expect weak entity output. Raise `--epochs`/`--max-train` (and edit units in `scripts/real_data.py`) to improve it; `docs/contextual-alternative.md` has the pretrained-encoder route. Use a new `--data` folder for each run (existing output is never overwritten).
+Output: `real-source/model-real/` (trained model) and `real-report.json`, then per-word tags. The default tiny model mostly predicts the majority tag `O`, so expect weak entity output. Raise `--epochs`/`--max-train` (and edit units in `scripts/real_data.py`) to improve it; `docs/contextual-alternative.md` has the pretrained-encoder route. With a small `--max-train`, dev sentences containing a tag the training slice never saw are skipped; the script prints a warning and the report records `development_skipped_unseen_tags` and a note in `limits`. A score on that subset is not comparable to the full dev set. Use a new `--data` folder for each run (existing output is never overwritten).
 
 ## Verified scope
 
