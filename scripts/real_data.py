@@ -12,8 +12,18 @@ def main():
     parser.add_argument(
         "--manifest", help="Reviewed selected Open Images source manifest"
     )
-    parser.add_argument("--epochs", type=int, default=2, help="Training epochs (default: the small recorded run)")
-    parser.add_argument("--max-train", type=int, default=512, help="Training examples to use (default: 512)")
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=2,
+        help="Training epochs (default: the small recorded run)",
+    )
+    parser.add_argument(
+        "--max-train",
+        type=int,
+        default=512,
+        help="Training examples to use (default: 512)",
+    )
     args = parser.parse_args()
     import hashlib
     import json
