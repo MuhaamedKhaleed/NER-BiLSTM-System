@@ -1,0 +1,420 @@
+{
+  "source": "https://github.com/leondz/emerging_entities_17",
+  "source_sha256": {
+    "wnut17train.conll": "731820e13f71af324c6b55a1575ec2ce59fbaa2a0806f8f0400b98d56cd6a7a5",
+    "emerging.dev.conll": "e053b752b8155113ca66e7db08af5f2f5f43ab993694e4774f1ec5bad42312d8",
+    "emerging.test.annotated": "2aa79b764e56ec9264a1b30fdd9b70195bd00ff400b62edd8f399d5f13c178f0"
+  },
+  "model": "Original-path Keras BiLSTM over train vocabulary, masked padded loss; probe adds optional dropout and learning-rate variants.",
+  "train_sentences": 3394,
+  "dev_sentences": 1009,
+  "test_sentences": 1287,
+  "selection": "Epoch and configuration selected by development exact-span F1 only; the single test read below happened after selection.",
+  "trials": [
+    {
+      "name": "default-e100-u64-lr1e-3",
+      "embedding": 100,
+      "units": 64,
+      "dropout": 0.0,
+      "lr": 0.001,
+      "history": [
+        {
+          "epoch": 1,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 2,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 3,
+          "development": {
+            "entity_micro_f1": 0.0023781212841854932,
+            "tp": 1,
+            "fp": 4,
+            "fn": 835,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 4,
+          "development": {
+            "entity_micro_f1": 0.026578073089700997,
+            "tp": 12,
+            "fp": 55,
+            "fn": 824,
+            "token_accuracy": 0.9209940888578148
+          }
+        },
+        {
+          "epoch": 5,
+          "development": {
+            "entity_micro_f1": 0.04665959703075292,
+            "tp": 22,
+            "fp": 85,
+            "fn": 814,
+            "token_accuracy": 0.9207398461831818
+          }
+        },
+        {
+          "epoch": 6,
+          "development": {
+            "entity_micro_f1": 0.06079664570230608,
+            "tp": 29,
+            "fp": 89,
+            "fn": 807,
+            "token_accuracy": 0.92080340685184
+          }
+        },
+        {
+          "epoch": 7,
+          "development": {
+            "entity_micro_f1": 0.06910569105691057,
+            "tp": 34,
+            "fp": 114,
+            "fn": 802,
+            "token_accuracy": 0.9187059047861184
+          }
+        },
+        {
+          "epoch": 8,
+          "development": {
+            "entity_micro_f1": 0.06183574879227053,
+            "tp": 32,
+            "fp": 167,
+            "fn": 804,
+            "token_accuracy": 0.9148922646666243
+          }
+        },
+        {
+          "epoch": 9,
+          "development": {
+            "entity_micro_f1": 0.0708955223880597,
+            "tp": 38,
+            "fp": 198,
+            "fn": 798,
+            "token_accuracy": 0.9143202186487002
+          }
+        },
+        {
+          "epoch": 10,
+          "development": {
+            "entity_micro_f1": 0.0703862660944206,
+            "tp": 41,
+            "fp": 288,
+            "fn": 795,
+            "token_accuracy": 0.909108243818725
+          }
+        },
+        {
+          "epoch": 11,
+          "development": {
+            "entity_micro_f1": 0.07561436672967864,
+            "tp": 40,
+            "fp": 182,
+            "fn": 796,
+            "token_accuracy": 0.9150193860039407
+          }
+        },
+        {
+          "epoch": 12,
+          "development": {
+            "entity_micro_f1": 0.08598130841121496,
+            "tp": 46,
+            "fp": 188,
+            "fn": 790,
+            "token_accuracy": 0.9154643106845484
+          }
+        }
+      ],
+      "best_development_f1": 0.08598130841121496,
+      "best_epoch": 12
+    },
+    {
+      "name": "dropout0.3-e100-u64-lr1e-3",
+      "embedding": 100,
+      "units": 64,
+      "dropout": 0.3,
+      "lr": 0.001,
+      "history": [
+        {
+          "epoch": 1,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 2,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 3,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 2,
+            "fn": 836,
+            "token_accuracy": 0.9204856035085489
+          }
+        },
+        {
+          "epoch": 4,
+          "development": {
+            "entity_micro_f1": 0.007033997655334115,
+            "tp": 3,
+            "fp": 14,
+            "fn": 833,
+            "token_accuracy": 0.9208669675204983
+          }
+        },
+        {
+          "epoch": 5,
+          "development": {
+            "entity_micro_f1": 0.03322259136212625,
+            "tp": 15,
+            "fp": 52,
+            "fn": 821,
+            "token_accuracy": 0.9214390135384224
+          }
+        },
+        {
+          "epoch": 6,
+          "development": {
+            "entity_micro_f1": 0.042105263157894736,
+            "tp": 20,
+            "fp": 94,
+            "fn": 816,
+            "token_accuracy": 0.9209305281891565
+          }
+        },
+        {
+          "epoch": 7,
+          "development": {
+            "entity_micro_f1": 0.035527690700104496,
+            "tp": 17,
+            "fp": 104,
+            "fn": 819,
+            "token_accuracy": 0.9204856035085489
+          }
+        },
+        {
+          "epoch": 8,
+          "development": {
+            "entity_micro_f1": 0.0577319587628866,
+            "tp": 28,
+            "fp": 106,
+            "fn": 808,
+            "token_accuracy": 0.9200406788279413
+          }
+        },
+        {
+          "epoch": 9,
+          "development": {
+            "entity_micro_f1": 0.06515301085883514,
+            "tp": 33,
+            "fp": 144,
+            "fn": 803,
+            "token_accuracy": 0.9168626453950296
+          }
+        },
+        {
+          "epoch": 10,
+          "development": {
+            "entity_micro_f1": 0.06476190476190476,
+            "tp": 34,
+            "fp": 180,
+            "fn": 802,
+            "token_accuracy": 0.9133032479501685
+          }
+        },
+        {
+          "epoch": 11,
+          "development": {
+            "entity_micro_f1": 0.06720977596741344,
+            "tp": 33,
+            "fp": 113,
+            "fn": 803,
+            "token_accuracy": 0.9184516621114854
+          }
+        },
+        {
+          "epoch": 12,
+          "development": {
+            "entity_micro_f1": 0.07705479452054795,
+            "tp": 45,
+            "fp": 287,
+            "fn": 791,
+            "token_accuracy": 0.9079005911142185
+          }
+        }
+      ],
+      "best_development_f1": 0.07705479452054795,
+      "best_epoch": 12
+    },
+    {
+      "name": "dropout0.3-e100-u128-lr3e-4",
+      "embedding": 100,
+      "units": 128,
+      "dropout": 0.3,
+      "lr": 0.0003,
+      "history": [
+        {
+          "epoch": 1,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 2,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 3,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 4,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 5,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 6,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 836,
+            "token_accuracy": 0.9205491641772071
+          }
+        },
+        {
+          "epoch": 7,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 2,
+            "fn": 836,
+            "token_accuracy": 0.9204856035085489
+          }
+        },
+        {
+          "epoch": 8,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 4,
+            "fn": 836,
+            "token_accuracy": 0.9204220428398907
+          }
+        },
+        {
+          "epoch": 9,
+          "development": {
+            "entity_micro_f1": 0.0,
+            "tp": 0,
+            "fp": 9,
+            "fn": 836,
+            "token_accuracy": 0.9204220428398907
+          }
+        },
+        {
+          "epoch": 10,
+          "development": {
+            "entity_micro_f1": 0.020642201834862386,
+            "tp": 9,
+            "fp": 27,
+            "fn": 827,
+            "token_accuracy": 0.9208669675204983
+          }
+        },
+        {
+          "epoch": 11,
+          "development": {
+            "entity_micro_f1": 0.035398230088495575,
+            "tp": 16,
+            "fp": 52,
+            "fn": 820,
+            "token_accuracy": 0.9211212101951313
+          }
+        },
+        {
+          "epoch": 12,
+          "development": {
+            "entity_micro_f1": 0.035164835164835165,
+            "tp": 16,
+            "fp": 58,
+            "fn": 820,
+            "token_accuracy": 0.9211847708637895
+          }
+        }
+      ],
+      "best_development_f1": 0.035398230088495575,
+      "best_epoch": 11
+    }
+  ],
+  "winner": "default-e100-u64-lr1e-3",
+  "winner_best_epoch": 12,
+  "test": {
+    "entity_micro_f1": 0.054945054945054944,
+    "tp": 40,
+    "fp": 337,
+    "fn": 1039,
+    "token_accuracy": 0.9168162776780371
+  },
+  "elapsed_seconds": 808.6220722198486,
+  "peak_rss_kb": 762004,
+  "limits": "Official test already exposed to the earlier BiLSTM run, the sparse linear baseline and the contextual alternative; this is a development comparison on an exposed test, not an untouched benchmark. Three fixed configurations, not exhaustive tuning. BIO exact spans, invalid I starts a new span. Token accuracy is not entity quality. Not production NER, no fairness claim."
+}
