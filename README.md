@@ -2,6 +2,18 @@
 
 A local token tagger that groups labeled CSV rows into sentences, splits whole sentences and learns a training-only vocabulary. A bidirectional LSTM sees each complete sentence and emits one label per token. This corrects the historical isolated-word classifier, it does not preserve its predictions.
 
+## Real-data quickstart (about 1 minute)
+
+Needs Python 3.11 or 3.12 (the locked PyTorch/TensorFlow wheels have no 3.13+ build); `--python 3.11` makes uv fetch it. Needs internet for the first install and downloads, and roughly 2 GB of free RAM.
+
+```sh
+uv sync --python 3.11 --locked --extra dev --extra ml
+uv run --no-sync python scripts/fetch_real_data.py --output ./real-source          # WNUT17, CC BY 4.0
+uv run --no-sync python scripts/real_data.py --data ./real-source --epochs 2 --max-train 512
+uv run --no-sync ner-bilstm predict ./real-source/model-real Mona visits Cairo
+```
+Output: `real-source/model-real/` (trained model) and `real-report.json`, then per-word tags. The default tiny model mostly predicts the majority tag `O`, so expect weak entity output. Raise `--epochs`/`--max-train` (and edit units in `scripts/real_data.py`) to improve it; `docs/contextual-alternative.md` has the pretrained-encoder route. Use a new `--data` folder for each run (existing output is never overwritten).
+
 ## Verified scope
 
 38 offline tests pass locally, including actual TensorFlow CPU forward/loss, one tiny synthetic epoch, Keras save/load and inference checks. These verify wiring, not NER quality. No real dataset, pretrained model or full training run was used. Token accuracy is not entity-span F1. No benchmark score is claimed.
