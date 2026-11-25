@@ -105,3 +105,7 @@ See [actual results, source terms and explicit download/preparation commands](do
 See [span metrics and explicit linear alternative](docs/quality-cpu.md). Token accuracy alone was misleading; no high-quality NER claim.
 
 See [reproducible original BiLSTM probe](docs/original-span-probe.md): the full-data neural run is now scripted, with a small development-selected configuration check on the already-exposed test. No quality guarantee.
+
+## Pretrained encoder download
+
+`scripts/fetch_encoder.py --output ./distilbert-encoder` downloads the pinned `distilbert-base-uncased` encoder (Apache-2.0, revision 12040acca...) with SHA-256 checks, the `--encoder` input that `scripts/contextual_cpu.py` expects. Steps and measured WNUT 2017 span F1 (test 0.362 for the frozen contextual head, versus 0.140 for a sparse-SGD baseline evaluated on the same annotated test in that document; not a comparison against the original BiLSTM notebook configurations) are in `docs/contextual-alternative.md`. Different cohorts and label sets from CoNLL-style public NER models, so scores are not comparable to those.
