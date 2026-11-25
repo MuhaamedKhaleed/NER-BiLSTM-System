@@ -109,3 +109,14 @@ See [reproducible original BiLSTM probe](docs/original-span-probe.md): the full-
 ## Pretrained encoder download
 
 `scripts/fetch_encoder.py --output ./distilbert-encoder` downloads the pinned `distilbert-base-uncased` encoder (Apache-2.0, revision 12040acca...) with SHA-256 checks, the `--encoder` input that `scripts/contextual_cpu.py` expects. Steps and measured WNUT 2017 span F1 (test 0.362 for the frozen contextual head, versus 0.140 for a sparse-SGD baseline evaluated on the same annotated test in that document; not a comparison against the original BiLSTM notebook configurations) are in `docs/contextual-alternative.md`. Different cohorts and label sets from CoNLL-style public NER models, so scores are not comparable to those.
+
+### Test file for the contextual route
+
+`scripts/fetch_real_data.py` downloads only the train and development files. The contextual `evaluate` step also needs the adjudicated test file from the same pinned upstream revision. Download it and check the hash before the `extract --split test` step:
+
+```sh
+curl -fL -o real-source/emerging.test.annotated https://raw.githubusercontent.com/leondz/emerging_entities_17/e52a2d2a71ac1a051ca2d532eef28653c5c02603/emerging.test.annotated
+echo "2aa79b764e56ec9264a1b30fdd9b70195bd00ff400b62edd8f399d5f13c178f0  real-source/emerging.test.annotated" | sha256sum -c -
+```
+
+Fresh-clone check, 25 Nov 2026 (1 CPU, Python 3.11, locked contextual environment, about 3 minutes of feature extraction): test span F1 0.3620 (301 TP, 283 FP, 778 FN), matching the recorded 0.362. The test split was already exposed in earlier runs, so this is not an untouched benchmark.
