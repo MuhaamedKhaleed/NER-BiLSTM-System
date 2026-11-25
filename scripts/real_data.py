@@ -12,6 +12,8 @@ def main():
     parser.add_argument(
         "--manifest", help="Reviewed selected Open Images source manifest"
     )
+    parser.add_argument("--epochs", type=int, default=2, help="Training epochs (default: the small recorded run)")
+    parser.add_argument("--max-train", type=int, default=512, help="Training examples to use (default: 512)")
     args = parser.parse_args()
     import hashlib
     import json
@@ -52,7 +54,7 @@ def main():
         return out
 
     # Whole official partitions; small CPU development slice, no row-level random split.
-    training = read("wnut17train.conll", "train")[:512]
+    training = read("wnut17train.conll", "train")[: args.max_train]
     vocab = Vocabulary.fit(training)
     validation = read("emerging.dev.conll", "dev")[:128]
     unknown = {t for s in validation for t in s.tags} - set(vocab.tags)
@@ -62,7 +64,7 @@ def main():
         training,
         validation,
         root / "model-real",
-        epochs=2,
+        epochs=args.epochs,
         batch_size=16,
         embedding=16,
         units=16,
@@ -75,7 +77,7 @@ def main():
         "train_sentences": len(training),
         "development_sentences": len(validation),
         "selection": (
-            "first512 official train / first128 official dev, complete "
+            f"first{args.max_train} official train / first128 official dev, complete "
             "sentences; final test untouched"
         ),
         "training_sha256": hashlib.sha256(
@@ -84,7 +86,7 @@ def main():
         "training": scores,
         "elapsed_seconds": round(time.time() - start, 2),
         "limits": (
-            "small2epoch CPU development run; token accuracy, not "
+            f"small {args.epochs}-epoch CPU development run; token accuracy, not "
             "entity-span F1; social-text provenance/privacy limits; not"
             " production NER"
         ),
