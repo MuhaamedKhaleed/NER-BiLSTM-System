@@ -103,3 +103,5 @@ See [actual results, source terms and explicit download/preparation commands](do
 ## Measured quality follow-up
 
 See [span metrics and explicit linear alternative](docs/quality-cpu.md). Token accuracy alone was misleading; no high-quality NER claim.
+
+See [reproducible original BiLSTM probe](docs/original-span-probe.md): the full-data neural run is now scripted, with a small development-selected configuration check on the already-exposed test. No quality guarantee.
