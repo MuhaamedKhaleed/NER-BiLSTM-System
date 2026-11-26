@@ -1,0 +1,24 @@
+# Changelog
+
+## Unreleased
+
+### Fixed
+- Replace isolated-word row classification with complete-sentence token labeling.
+- Keep validation sentences out of training, fit vocabulary on training only and reject unseen validation tags instead of removing rows.
+- Mask/weight padding and prevent output overwrite and implicit training.
+
+### Added
+- Explicit local check-data/train/predict CLI, optional CPU backend and trusted-local artifact round-trip.
+- Offline tests including real synthetic TensorFlow wiring, packaging, quality checks, CI, data-only Docker and truthful docs.
+
+### Changed
+- Original script retained under legacy/, not the supported API. No widget migration, release or pretrained model.
+
+
+### Engineering follow-up
+- Use the committed uv lock in CI and key dependency-installer caching by that lock.
+- Complete copy-only profile README drafts and clarify historical versus current verification.
+
+### Synthetic demonstration follow-up
+
+Added standalone invented-input backend demo, checked JSON output and documented limits. Opt-in ML container added where a model backend exists; default lightweight image unchanged. Hosted container verification is required separately.

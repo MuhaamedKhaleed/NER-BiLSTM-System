@@ -1,0 +1,55 @@
+{
+  "bilstm": {
+    "source": "https://github.com/leondz/emerging_entities_17",
+    "train_sentences": 3394,
+    "dev_sentences": 1009,
+    "test_sentences": 1287,
+    "test": {
+      "entity_micro_f1": 0.048024786986831915,
+      "entity_tp": 31,
+      "entity_fp": 181,
+      "entity_fn": 1048,
+      "token_accuracy": 0.9220740360776267,
+      "tokens": 23394
+    },
+    "selection": "Best development spanF1 through11epochs. Execution turn timeout interrupted12th; selected saved checkpoint not lost.",
+    "limits": "Full official test read once now, not tuned afterward. BIO exact spans. Not useful highquality yet."
+  },
+  "linear_alternative": {
+    "source": "https://github.com/leondz/emerging_entities_17",
+    "model": "Contextual word/shapefeatures sparse balanced SGDlinear classifier, not BiLSTM",
+    "development_trials": [
+      {
+        "alpha": 1e-05,
+        "entity_micro_f1": 0.20553359683794467,
+        "tp": 130,
+        "fp": 299,
+        "fn": 706
+      },
+      {
+        "alpha": 0.0001,
+        "entity_micro_f1": 0.21926910299003322,
+        "tp": 165,
+        "fp": 504,
+        "fn": 671
+      },
+      {
+        "alpha": 0.001,
+        "entity_micro_f1": 0.21045665122435472,
+        "tp": 159,
+        "fp": 516,
+        "fn": 677
+      }
+    ],
+    "selected_alpha": 0.0001,
+    "test": {
+      "entity_micro_f1": 0.14048059149722736,
+      "tp": 152,
+      "fp": 933,
+      "fn": 927
+    },
+    "elapsed_seconds": 6.8723132610321045,
+    "peak_rss_kb": 292208,
+    "limits": "Officialtest also evaluated earlier neural baseline, no test-driven selection here; dev-only hyperparameters. Independentword tags may violate BIO; spans apply invalidI-asnew rule. Not stateoftheart/fairness guarantee."
+  }
+}
