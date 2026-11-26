@@ -16,7 +16,7 @@ Output: `real-source/model-real/` (trained model) and `real-report.json`, then p
 
 ## Verified scope
 
-38 offline tests pass locally, including actual TensorFlow CPU forward/loss, one tiny synthetic epoch, Keras save/load and inference checks. These verify wiring, not NER quality. No real dataset, pretrained model or full training run was used. Token accuracy is not entity-span F1. No benchmark score is claimed.
+38 offline tests pass locally, including actual TensorFlow CPU forward/loss, one tiny synthetic epoch, Keras save/load and inference checks. These verify wiring, not NER quality. The real-data quickstart above trains on public WNUT17 (small CPU runs); see the sections below for measured span F1 and its limits. Token accuracy is not entity-span F1. No untouched-benchmark score is claimed.
 
 ## Install and checks
 
@@ -65,7 +65,7 @@ ner-bilstm check-data --data /tmp/ner-demo.csv
 
 Configuration is opt-in: `ner-bilstm check-data --config .env`. Only `NER_DATA_PATH` is read; explicit `--data` wins. See `.env.example`. No API keys, accounts or automatic downloads.
 
-Explicit training interface: `ner-bilstm train DATA OUTPUT --epochs 10 --batch-size 32`. It writes a new output directory, never overwrites one, and evaluates the held-out validation split. No large training run has been performed. A separate untouched test set is required for final quality evidence. Prediction interface: `ner-bilstm predict ARTIFACT Mona visits Cairo`. Only load your own trusted local Keras artifacts; safe mode is not a security guarantee for untrusted model files. All CLI results are JSON; errors go to stderr and exit 2. Help, data check, synthetic training and prediction paths have been tested, not real-data results.
+Explicit training interface: `ner-bilstm train DATA OUTPUT --epochs 10 --batch-size 32`. It writes a new output directory, never overwrites one, and evaluates the held-out validation split. No large training run has been performed. A separate untouched test set is required for final quality evidence. Prediction interface: `ner-bilstm predict ARTIFACT Mona visits Cairo`. Only load your own trusted local Keras artifacts; safe mode is not a security guarantee for untrusted model files. All CLI results are JSON; errors go to stderr and exit 2. Help, data check, synthetic training and prediction paths are tested offline; real-data results are in `docs/real-data.md` and `docs/quality-cpu.md`.
 
 ## Architecture
 
@@ -80,14 +80,14 @@ Runtime: Typer, Click, python-dotenv. Optional ML: TensorFlow CPU, NumPy. Dev: p
 
 ## Container and CI
 
-Multi-stage slim/non-root Docker runs the lightweight data-check CLI. It does not include TensorFlow, data, weights or dev tools. Optional ML runs in the local environment, not this image. Hosted CI checks the actual TensorFlow synthetic path and the container separately. No image publishing, caches, stored artifacts or paid runners are configured. Final hosted result must be checked before claiming a green build.
+Multi-stage slim/non-root Docker runs the lightweight data-check CLI. It does not include TensorFlow, data, weights or dev tools. Optional ML runs in the local environment, not this image. Hosted CI checks the actual TensorFlow synthetic path and the container separately. No image publishing, caches, stored artifacts or paid runners are configured. The hosted CI result is shown by the Actions badge/tab on GitHub.
 
 ```sh
 docker build --tag ner-bilstm:local .
 docker run --rm ner-bilstm:local --help
 ```
 
-Local Docker is unavailable; build/run are verified only by hosted CI when that job passes, not locally.
+Docker build/run are verified by hosted CI, not on a local daemon.
 
 ## Remaining work
 
@@ -97,7 +97,7 @@ Local Docker is unavailable; build/run are verified only by hosted CI when that 
 - Validation is reused for training feedback, never described as an untouched test set. No fairness, latency, memory or production-readiness claims.
 - Optional widgets were not carried into the supported package. No deployment, dataset/model redistribution, release or license change.
 
-See `docs/verification.md` for checks and scope, `docs/presentation.md` for unapplied GitHub copy. Demo screenshot/GIF: TODO after real-data evaluation. No fake badge or result.
+See `docs/verification.md` for checks and scope, `docs/presentation.md` for unapplied GitHub copy. No screenshot or badge is shown; the quickstart above produces the real output.
 
 
 ## License scope
